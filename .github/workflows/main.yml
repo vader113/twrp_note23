@@ -1,0 +1,60 @@
+name: Build TWRP for VGOTEL Note 23
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Using the latest Ubuntu runner
+
+    steps:
+    - name: Checkout the TWRP repository
+      uses: actions/checkout@v3
+
+    - name: Set up Git environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y git python3-pip
+        pip3 install repo
+
+    - name: Set up repo tool
+      run: |
+        mkdir -p ~/bin
+        curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+        chmod a+x ~/bin/repo
+        export PATH=~/bin:$PATH
+
+    - name: Sync TWRP source code
+      run: |
+        repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1
+        repo sync -j$(nproc --all)
+
+    - name: Add  device tree
+      run: |
+        cd .repo/local_manifests
+        echo '<manifest><project name="vader113/twrp_note23" path="device/ssh/NOTE_23" remote="github" revision="main" /></manifest>' > device_ssh_NOTE_23.xml
+        cd ..
+
+    - name: Set up environment for TWRP build
+      run: |
+        . build/envsetup.sh
+        lunch twrp_NOTE_23-eng
+
+    - name: Build recovery image
+      run: |
+        make recoveryimage -j$(nproc --all)
+
+    - name: Upload TWRP recovery image
+      uses: actions/upload-artifact@v3
+      with:
+        name: recovery-image
+        path: out/target/product/NOTE_23/recovery.img
+
+    - name: Clean up
+      run: |
+        rm -rf out/

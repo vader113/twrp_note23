@@ -29,7 +29,7 @@ jobs:
         export PATH=~/bin:$PATH
 
         # Init and sync TWRP source
-        repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1
+        repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1 --depth=1
         repo sync -j$(nproc --all)
 
         # Add device tree manifest

@@ -10,44 +10,40 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Using the latest Ubuntu runner
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout the TWRP repository
       uses: actions/checkout@v4
 
-    - name: Set up Git environment
+    - name: Set up build environment and sync sources
       run: |
+        # Install dependencies
         sudo apt-get update
         sudo apt-get install -y git python3-pip
-        pip3 install repo
 
-    - name: Set up repo tool
-      run: |
+        # Install repo tool
         mkdir -p ~/bin
         curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
         chmod a+x ~/bin/repo
         export PATH=~/bin:$PATH
 
-    - name: Sync TWRP source code
-      run: |
+        # Init and sync TWRP source
         repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1
         repo sync -j$(nproc --all)
 
-    - name: Add  device tree
-      run: |
-        cd .repo/local_manifests
-        echo '<manifest><project name="vader113/twrp_note23" path="device/ssh/NOTE_23" remote="github" revision="main" /></manifest>' > device_ssh_NOTE_23.xml
-        cd ..
+        # Add device tree manifest
+        mkdir -p .repo/local_manifests
+        echo '<manifest><project name="vader113/twrp_note23" path="device/ssh/NOTE_23" remote="github" revision="main" /></manifest>' > .repo/local_manifests/device_ssh_NOTE_23.xml
+        repo sync -j$(nproc --all)
+      shell: bash
 
-    - name: Set up environment for TWRP build
+    - name: Set up environment and build TWRP
       run: |
-        . build/envsetup.sh
+        source build/envsetup.sh
         lunch twrp_NOTE_23-eng
-
-    - name: Build recovery image
-      run: |
         make recoveryimage -j$(nproc --all)
+      shell: bash
 
     - name: Upload TWRP recovery image
       uses: actions/upload-artifact@v4

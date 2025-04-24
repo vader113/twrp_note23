@@ -19,7 +19,7 @@ $(call inherit-product, vendor/pb/config/common.mk)
 $(call inherit-product, device/ssh/NOTE_23/device.mk)
 
 PRODUCT_DEVICE := NOTE_23
-PRODUCT_NAME := omni_NOTE_23
+PRODUCT_NAME := twrp_NOTE_23
 PRODUCT_BRAND := VGO_TEL
 PRODUCT_MODEL := NOTE 23
 PRODUCT_MANUFACTURER := ssh

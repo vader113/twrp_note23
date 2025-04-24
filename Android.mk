@@ -9,4 +9,5 @@ LOCAL_PATH := $(call my-dir)
 
 ifeq ($(TARGET_DEVICE),NOTE_23)
 include $(call all-subdir-makefiles,$(LOCAL_PATH))
+include $(CLEAR_VARS)
 endif

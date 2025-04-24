@@ -6,7 +6,8 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/omni_NOTE_23.mk
+    $(LOCAL_DIR)/omni_NOTE_23.mk \
+    $(LOCAL_DIR)/pbrp.mk
 
 COMMON_LUNCH_CHOICES := \
     omni_NOTE_23-user \

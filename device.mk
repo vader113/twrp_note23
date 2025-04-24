@@ -21,7 +21,9 @@ PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-service
 
 PRODUCT_PACKAGES += \
-    bootctrl.common
+    bootctrl.common \
+    android.hardware.fastboot@1.0-impl-mock \
+    fastbootd
 
 PRODUCT_STATIC_BOOT_CONTROL_HAL := \
     bootctrl.common \

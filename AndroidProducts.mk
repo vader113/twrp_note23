@@ -6,9 +6,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/omni_NOTE_23.mk
+    $(LOCAL_DIR)/twrp_NOTE_23.mk \
 
 COMMON_LUNCH_CHOICES := \
-    omni_NOTE_23-user \
-    omni_NOTE_23-userdebug \
-    omni_NOTE_23-eng
+    twrp_NOTE_23-user \
+    twrp_NOTE_23-userdebug \
+    twrp_NOTE_23-eng

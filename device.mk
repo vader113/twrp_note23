@@ -5,6 +5,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+
 LOCAL_PATH := device/ssh/NOTE_23
 # A/B
 AB_OTA_POSTINSTALL_CONFIG += \
@@ -19,13 +21,15 @@ PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-service
 
 PRODUCT_PACKAGES += \
-    bootctrl.common
-
-PRODUCT_STATIC_BOOT_CONTROL_HAL := \
     bootctrl.common \
-    libgptutils \
-    libz \
-    libcutils
+    android.hardware.fastboot@1.0-impl-mock \
+    fastbootd
+
+#PRODUCT_STATIC_BOOT_CONTROL_HAL := \
+#    bootctrl.common \
+#    libgptutils \
+#    libz \
+#    libcutils
 
 PRODUCT_PACKAGES += \
     otapreopt_script \
